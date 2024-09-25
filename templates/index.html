@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GREEN-API Interface</title>
+    <style>
+        /* Стили для страницы */
+        input[type="text"], input[type="textarea"] {
+            width: calc(100% - 20px); /* Ширина полей ввода */
+            padding: 10px; /* Отступы внутри полей ввода */
+            margin: 10px 0; /* Отступы между полями ввода */
+            border: 1px solid #ccc; /* Граница полей ввода */
+        }
+        button {
+            padding: 10px 15px; /* Отступы внутри кнопок */
+            background-color: #28a745; /* Цвет фона кнопок */
+            color: white; /* Цвет текста кнопок */
+            border: none; /* Убираем границу кнопок */
+            cursor: pointer; /* Указываем, что кнопка кликабельна */
+        }
+        button:hover {
+            background-color: #218838; /* Цвет кнопки при наведении */
+        }
+        .response {
+            border: 1px solid #ccc; /* Граница для поля ответа */
+            padding: 10px; /* Отступы внутри поля ответа */
+            margin-top: 10px; /* Отступ сверху */
+            white-space: pre-wrap; /* Сохранение пробелов и переносов строк */
+            background-color: #e9ecef; /* Цвет фона поля ответа */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>GREEN-API Interface</h2>
+        <label for="idInstance">ID Instance:</label>
+        <input type="text" id="idInstance" placeholder="Введите idInstance">
+        <label for="apiToken">API Token Instance:</label>
+        <input type="text" id="apiTokenInstance" placeholder="Введите ApiTokenInstance">
+
+        <!-- Кнопки для вызова методов API -->
+        <button onclick="getSettings()">Get Settings</button>
+        <button onclick="getStateInstance()">Get State Instance</button>
+        <button onclick="sendMessage()">Send Message</button>
+
+        <!-- Поле для отображения ответа API -->
+        <div class="response" id="response" readonly></div>
+    </div>
+
+    <script>
+        // Функция для получения настроек
+        async function getSettings() {
+            const idInstance = document.getElementById("idInstance").value;
+            const apiTokenInstance = document.getElementById("apiTokenInstance").value;
+
+            // Выполняем POST-запрос на сервер
+            const response = await fetch('/api/getSettings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Указываем формат данных
+                },
+                body: JSON.stringify({ idInstance, apiTokenInstance }) // Передаем данные в JSON
+            });
+
+            // Получаем ответ и отображаем его
+            const result = await response.json();
+            document.getElementById("response").innerText = JSON.stringify(result, null, 2);
+        }
+
+        // Функция для получения состояния инстанса
+        async function getStateInstance() {
+            const idInstance = document.getElementById("idInstance").value;
+            const apiTokenInstance = document.getElementById("apiTokenInstance").value;
+
+            // Выполняем POST-запрос на сервер
+            const response = await fetch('/api/getStateInstance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Указываем формат данных
+                },
+                body: JSON.stringify({ idInstance, apiTokenInstance }) // Передаем данные в JSON
+            });
+
+            // Получаем ответ и отображаем его
+            const result = await response.json();
+            document.getElementById("response").innerText = JSON.stringify(result, null, 2);
+        }
+
+        // Функция для отправки сообщения
+        async function sendMessage() {
+            const idInstance = document.getElementById("idInstance").value;
+            const apiTokenInstance = document.getElementById("apiTokenInstance").value;
+
+            // Данные для отправки сообщения
+            const messageData = {
+                chatId: "nomber_phone",
+                message: "Привет! Это тестовое сообщение." // Текст сообщения
+            };
+
+            // Выполняем POST-запрос на сервер
+            const response = await fetch('/api/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Указываем формат данных
+                },
+                body: JSON.stringify({ 
+                    idInstance, 
+                    apiTokenInstance, 
+                    data: messageData // Передаем данные в JSON
+                })
+            });
+
+            // Получаем ответ и отображаем его
+            const result = await response.json();
+            document.getElementById("response").innerText = JSON.stringify(result, null, 2);
+        }
+    </script>
+    <footer>
+        <p>tapaado</p>
+    </footer>
+</body>
+</html>

@@ -31,5 +31,5 @@ def call_api(method):
     return jsonify(response.json())
 
 # Запуск приложения
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
